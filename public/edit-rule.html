@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Rule Editor</title>
+  <!-- from main.css of cr-vue/codes/turorial-todo -->
+  <!--<link rel="stylesheet" href="./main.css">-->
+  <style type="text/css">
+* {
+  box-sizing: border-box;
+}
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.table1 {
+  width: 100%;
+  border-collapse: separate;
+}
+.table1 td {
+  border: 1px solid gray;
+}
+.table2 {
+  width: 100%;
+  border-collapse: separate;
+}
+.select1 {
+  width: 80px;
+  font-size: 18px;
+}
+.btn1 {
+  display: block;
+  margin: 0 0 0 auto;
+}
+  </style>
+<!-- from main.js of cr-vue/codes/turorial-todo -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+<script src="https://cdn.jsdelivr.net/vue/latest/vue.min.js"></script>
+</head>
+<script src="/nGrimm021.js"></script>
+<body>
+  <div id="app">
+    <div>
+      <button id="save-button"
+        v-on:click="handleSaveRules">保存</button>
+      <select class="select1"
+        v-model.number="section"
+        v-on:change="handleSelect(section, $event)">
+        <option disabled="disabled">選択して下さい</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+      </select>
+    </div>
+    <hr>
+    <div>
+      <H3>{{ story[section].subtitle }}</H3>
+      <p>{{ story[section].paragraph }}</p>
+    </div>
+    <hr>
+    <div>
+      <table class="table1">
+        <tr>
+          <th width="10">MSG</th>
+          <td width="90%" 
+              v-if="focus != 0" 
+              v-on:dblclick="inputMessage(0)">{{ message[0] }}</td>
+          <td width="90%" v-else>
+            <input type="text" size="78" 
+              v-bind:value="message[0]" 
+              v-on:blur="updateMessage($event)"
+              ref="zero">
+          </td>
+        </tr>
+      </table>
+      <table class="table1">
+        <tr>
+          <th width="10%" rowspan="2">1</th>
+          <th width="5%">Q</th>
+          <td width="85%"
+              v-if="focus != 1" 
+              v-on:dblclick="inputMessage(1)">{{ message[1] }}</td>
+          <td width="85%" v-else>
+            <input type="text" size="74" 
+              v-bind:value="message[1]" 
+              v-on:blur="updateMessage($event)"
+              ref="one">
+          </td>
+        </tr>
+        <tr>
+          <th>A</th>
+          <td width="85%"
+              v-if="focus != 2" 
+              v-on:dblclick="inputMessage(2)">{{ message[2] }}</td>
+          <td width="85%" v-else>
+            <input type="text" size="74" 
+              v-bind:value="message[2]" 
+              v-on:blur="updateMessage($event)"
+              ref="two">
+        </tr>
+        <tr>
+          <th rowspan="2">2</th>
+          <th>Q</th>
+          <td width="85%"
+              v-if="focus != 3" 
+              v-on:dblclick="inputMessage(3)">{{ message[3] }}</td>
+          <td width="85%" v-else>
+            <input type="text" size="74" 
+              v-bind:value="message[3]" 
+              v-on:blur="updateMessage($event)"
+              ref="three">
+        </tr>
+        <tr>
+          <th>A</th>
+          <td width="85%"
+              v-if="focus != 4" 
+              v-on:dblclick="inputMessage(4)">{{ message[4] }}</td>
+          <td width="85%" v-else>
+            <input type="text" size="74" 
+              v-bind:value="message[4]" 
+              v-on:blur="updateMessage($event)"
+              ref="four">
+        </tr>
+        <tr>
+          <th rowspan="2">3</th>
+          <th>Q</th>
+          <td width="85%"
+              v-if="focus != 5" 
+              v-on:dblclick="inputMessage(5)">{{ message[5] }}</td>
+          <td width="85%" v-else>
+            <input type="text" size="74" 
+              v-bind:value="message[5]" 
+              v-on:blur="updateMessage($event)"
+              ref="five">
+        </tr>
+        <tr>
+          <th>A</th>
+          <td width="85%"
+              v-if="focus != 6" 
+              v-on:dblclick="inputMessage(6)">{{ message[6] }}</td>
+          <td width="85%" v-else>
+            <input type="text" size="74" 
+              v-bind:value="message[6]" 
+              v-on:blur="updateMessage($event)"
+              ref="six">
+        </tr>
+      </table>
+      <table class="table1">
+        <tr>
+          <th width="10%">NCA</th>
+          <td width="90%" 
+              v-if="focus != 7" 
+              v-on:dblclick="inputMessage(7)">{{ message[7] }}</td>
+          <td width="90%" v-else>
+            <input type="text" size="78" 
+              v-bind:value="message[7]" 
+              v-on:blur="updateMessage($event)" 
+              ref="seven">
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <div>
+      <table class="table2">
+        <tr>
+          <td width="10%">
+            <button id="play-button"
+            v-on:click="speakConversation">Go</button>    
+          </td>
+          <td width="90%">{{ MSG }}</td>
+        </tr>
+        <tr>
+          <td>
+            <button id="play-button"
+            v-on:click="speakAnswer">Ans</button>
+          </td>
+          <td>
+            <input type="text" size="80" 
+              v-bind:value="Answer" 
+              v-on:blur="setAnswer($event)" 
+              ref="ANS">
+          </td>
+        </tr>
+        <tr><td></td><td>{{ RPY }}</td></tr>
+      </table>
+    </div>
+  </div>
+</body>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      section: 1,
+      prevsec: 1,
+      focus: 8,
+      message: ['', '', '', '', '', '', '', ''],
+      trainer: localStorage.getItem('trainer'),
+      story: Grimm021,
+      rules: [],
+      MSG: '',
+      Answer: '',
+      RPY: '',
+      synth: null
+    },
+    async mounted() {
+      this.synth = window.speechSynthesis;
+
+      var args = { key: localStorage.getItem('trainer') };
+      var res = await this.getScript(args);
+      //console.log(JSON.stringify(res, null, 2));
+      if (res.message != 'success') {
+        this.rules = [ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, 
+                       {}, {}, {}, {}, {}, {}, {}, {}, {}, {} ];
+        return;
+      }
+      this.rules = JSON.parse(res.response);
+
+      this.message[0] = '';
+      this.message[1] = '';
+      this.message[2] = '';
+      this.message[3] = '';
+      this.message[4] = '';
+      this.message[5] = '';
+      this.message[6] = '';
+      this.message[7] = '';
+      if (Object.keys(this.rules[1]).length > 0) {
+        if (this.rules[1].msg) {
+          this.message[0] = this.rules[1].msg;
+        }
+        if (this.rules[1].qap) {
+          this.message[1] = this.rules[1].qap[0].q;
+          this.message[2] = this.rules[1].qap[0].a;
+          this.message[3] = this.rules[1].qap[1].q;
+          this.message[4] = this.rules[1].qap[1].a;
+          this.message[5] = this.rules[1].qap[2].q;
+          this.message[6] = this.rules[1].qap[2].a;
+        }
+        if (this.rules[1].nca) {
+          this.message[7] = this.rules[1].nca;
+        }
+      }
+    },
+    methods: {
+      getScript: async function(data) {
+        const res = await fetch("/get", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const response = await res.json();
+        return(response);
+      },
+      putScript: async function(names, value) {
+        console.log("key: "+names);
+        console.log("val: "+value);
+        var data = {
+          key: names,
+          val: value
+        };
+        const res = await fetch("/put", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const response = await res.json();
+        return(response);
+      },
+      handleSelect: async function(sec, event) {
+        //console.log("# handleSelect");
+        //console.log("sec: "+sec);
+        //console.log("section: "+this.section);
+        //console.log("prevsec: "+this.prevsec);
+        var elm = {};
+        elm.msg = this.message[0];
+        elm.qap = [];
+        elm.qap.push({ q: this.message[1], a: this.message[2] });
+        elm.qap.push({ q: this.message[3], a: this.message[4] });
+        elm.qap.push({ q: this.message[5], a: this.message[6] });
+        elm.nca = this.message[7];
+        this.rules[this.prevsec] = elm;
+
+        this.message[0] = '';
+        this.message[1] = '';
+        this.message[2] = '';
+        this.message[3] = '';
+        this.message[4] = '';
+        this.message[5] = '';
+        this.message[6] = '';
+        this.message[7] = '';
+
+        if (Object.keys(this.rules[this.section]).length > 0) {
+          if (this.rules[this.section].msg) {
+            this.message[0] = this.rules[this.section].msg;
+          }
+          if (this.rules[this.section].qap) {
+            this.message[1] = this.rules[this.section].qap[0].q;
+            this.message[2] = this.rules[this.section].qap[0].a;
+            this.message[3] = this.rules[this.section].qap[1].q;
+            this.message[4] = this.rules[this.section].qap[1].a;
+            this.message[5] = this.rules[this.section].qap[2].q;
+            this.message[6] = this.rules[this.section].qap[2].a;
+          }
+          if (this.rules[this.section].nca) {
+            this.message[7] = this.rules[this.section].nca;
+          }
+        }
+
+        this.prevsec = this.section;
+
+        this.MSG = '';
+        this.Answer = '';
+        this.RPY = '';
+      },
+      handleSaveRules: async function() {
+        //console.log("# handleSaveRules");
+        var elm = {};
+        elm.msg = this.message[0];
+        elm.qap = [];
+        elm.qap.push({ q: this.message[1], a: this.message[2] });
+        elm.qap.push({ q: this.message[3], a: this.message[4] });
+        elm.qap.push({ q: this.message[5], a: this.message[6] });
+        elm.nca = this.message[7];
+        this.rules[this.prevsec] = elm;
+        
+        var res = await this.putScript(this.trainer, JSON.stringify(this.rules));
+        //console.log(res);
+      },
+      speakStory: async function() {
+        //console.log("recite: "+this.story[this.section].recite.length);
+        var recite = this.story[this.section].recite;
+        var synth = this.synth;
+        var uttr = new SpeechSynthesisUtterance();
+        uttr.name = "Kyoko";
+        uttr.lang = "ja-JP";
+        uttr.rate = 0.8;
+        uttr.pitch = 1.2;
+        for (var i = 0; i < recite.length; i++) {
+          //console.log(i+": "+recite[i]);
+          var sentence = recite[i];
+          uttr.text = sentence;
+          await new Promise(function(resolve) {
+            uttr.onend = resolve;
+            synth.speak(uttr);
+          });
+        }
+      },
+      speakOneSentence: function(sentence) {
+        var synth = this.synth;
+        var uttr = new SpeechSynthesisUtterance();
+        uttr.lang = "ja-JP";
+        uttr.name = "Kyoko";
+        uttr.pitch = 0.7;
+        uttr.rate = 0.8;
+        uttr.text = sentence;
+        return(new Promise(function(resolve){
+          uttr.onend = resolve;
+          synth.speak(uttr);
+        }));
+      },
+      speakConversation: async function() {
+        this.MSG = '';
+        this.Answer = '';
+        this.RPY = '　';
+        if (this.message[0].length <= 0) {
+          this.MSG = "MSGがありません";
+          return;
+        } else {
+          this.MSG = this.message[0];
+          await this.speakOneSentence(this.message[0]);
+        }
+        this.$nextTick(() => {
+          this.$refs.ANS.focus();
+        });
+      },
+      setAnswer: function(event) {
+        this.Answer = event.target.value;
+      },
+      speakAnswer: async function() {
+        console.log("# speakAnswer");
+        console.log("this.Answer: "+ this.Answer);
+
+        if (this.message[1].length > 0) {
+          if (this.Answer.indexOf(this.message[1]) >= 0) {
+            console.log("match '"+this.message[1]+"': reply "+this.message[2]);
+            this.RPY = this.message[2];
+            await this.speakOneSentence(this.message[2]);
+            return;
+          }
+        }
+
+        if (this.message[3].length > 0) {
+          if (this.Answer.indexOf(this.message[3]) >= 0) {
+            console.log("match '"+this.message[3]+"': reply "+this.message[4]);
+            this.RPY = this.message[4];
+            await this.speakOneSentence(this.message[4]);
+            return;
+          }
+        }
+
+        if (this.message[5].length > 0) {
+          if (this.Answer.indexOf(this.message[5]) >= 0) {
+            console.log("match '"+this.message[5]+"': reply "+this.message[6]);
+            this.RPY = this.message[6];
+            await this.speakOneSentence(this.message[6]);
+            return;
+          }
+        }
+
+        if (this.message[7].length <= 0) {
+          console.log("this.message[7] is empty");
+          //this.RPY = "NCAがありません";
+        } else {
+          console.log("no match: reply"+this.message[7]);
+          this.RPY = this.message[7];
+          await this.speakOneSentence(this.message[7]);
+        }
+      },
+      inputMessage: function(id) {
+        //console.log("# inputMessage");
+        //console.log("id: "+id);
+        this.focus = id;
+        if (id == 0) {
+          this.$nextTick(() => {
+            this.$refs.zero.focus();
+          });
+        } else if (id == 1) {
+          this.$nextTick(() => {
+            this.$refs.one.focus();
+          });
+        } else if (id == 2) {
+          this.$nextTick(() => {
+            this.$refs.two.focus();
+          });
+        } else if (id == 3) {
+          this.$nextTick(() => {
+            this.$refs.three.focus();
+          });
+        } else if (id == 4) {
+          this.$nextTick(() => {
+            this.$refs.four.focus();
+          });
+        } else if (id == 5) {
+          this.$nextTick(() => {
+            this.$refs.five.focus();
+          });
+        } else if (id == 6) {
+          this.$nextTick(() => {
+            this.$refs.six.focus();
+          });
+        } else if (id == 7) {
+          this.$nextTick(() => {
+            this.$refs.seven.focus();
+          });
+        }
+      },
+      updateMessage: function(event) {
+        //console.log("# updateMessage");
+        //console.log(event.target.value);
+        this.message[this.focus] = event.target.value;
+        this.focus = 8;
+      }
+    }
+  });
+</script>
+</html>

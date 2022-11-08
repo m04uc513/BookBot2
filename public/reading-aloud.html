@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Reading Aloud</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/botui/build/botui.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/botui/build/botui-theme-default.css" />
+  <meta name="description" content="GrimmBot: Story 021 (Cinderella)">
+  <meta name="description" content="A voice conversational UI built using BotUI.">
+  <style type="text/css">
+  </style>
+</head>
+<script src="/nGrimm021.js"></script>
+<body>
+  <div id="app">
+    <div id="header">
+      <p>{{ header }} {{ footer }}</p>
+    </div>
+    <div class="botui-app-container" id="AAA">
+      <bot-ui></bot-ui>
+    </div>
+    <div v-if="mode === 2" id="footer">
+      <button id="answer-button"
+        v-on:click="showAnswer">回答</button>
+      <input type="text" size="40"
+        v-model="answer" ref="ANS">
+    </div>
+    <div v-else-if="mode === 1" id="footer">
+      <button id="next-button"
+        v-on:click="showQuestion">次へ</button>
+      <button id="stop-button"
+        v-on:click="stopParagraph">発話停止</button>
+      <button id="reply-button"
+        v-on:click="speekParagraph">再発話</button>
+    </div>
+    <div v-else id="footer">
+      <button id="continue-button"
+        v-on:click="showParagraph">続ける</button>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/vue/latest/vue.min.js"></script>
+<script src="https://unpkg.com/botui/build/botui.js"></script>
+<script type="module" src="/reading-aloud.js"></script>
+</html>

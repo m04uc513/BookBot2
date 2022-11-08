@@ -1,0 +1,103 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BookBot2 prototype">
+
+    <title>BookBot2 prototype</title>
+    <!-- import the webpage's stylesheet -->
+    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <style>
+      input.hoge { width: 25%; }
+    </style>
+    <!-- import the webpage's client-side javascript file -->
+    <!-- <script src="/client.js" defer></script> -->
+  </head>
+  <body>
+    <header>
+      <h2>Your Number</h2>
+    </header>
+
+    <main>
+      <p>番号を入力してください</p>
+      
+      <div>
+        <input type="text" id="number-text" class=hoge>
+      </div>
+      <br>
+      <div>
+        <button id="edit-rule">Edit Rules</button>
+        <button id="whole-story">Whole Story</button>
+        <button id="reading-aloud">Reading Aloud</button>
+        <!--<button id="with-botui">with BotUI</button>-->
+        <button id="edit-json">Edit JSON</button>
+      </div>
+      
+    </main>
+  </body>
+  <script>
+    const numberText = document.getElementById('number-text');
+
+    const editRule = document.getElementById('edit-rule');
+    const wholeStory = document.getElementById('whole-story');
+    const readingAloud = document.getElementById('reading-aloud');
+    //const withBotUI = document.getElementById('with-botui');
+    const editJSON = document.getElementById('edit-json');
+
+    //localStorage.setItem('myCat', 'Tom');
+    //var cat = localStorage.getItem("myCat")
+    //localStorage.removeItem("myCat");
+    
+    var trainer = localStorage.getItem('trainer');
+    if (trainer != null) {
+      numberText.value = trainer;
+    }
+    localStorage.removeItem('trainer');
+    localStorage.removeItem('rules');
+
+    async function editRuleClick()
+    {
+      console.log("Edit Rule Button Clicked");
+      localStorage.setItem('trainer', numberText.value);
+      location.href = "/edit-rule.html";
+    }
+
+    async function readingAloudClick()
+    {
+      console.log("Reading Aloud Button Clicked");
+      localStorage.setItem('trainer', numberText.value);
+      location.href = "/reading-aloud.html";
+    }
+
+    async function showWholeStoryClick()
+    {
+      console.log("Reading Aloud Button Clicked");
+      localStorage.setItem('trainer', numberText.value);
+      location.href = "/whole.html";
+    }
+/*
+    async function withBotUIClick()
+    {
+      console.log("Reading with BotUI Button Clicked");
+      localStorage.setItem('trainer', numberText.value);
+      location.href = "/reading-with-botui.html";
+    }
+*/
+    async function editJSONClick()
+    {
+      console.log("Edit Rules with JSON format");
+      localStorage.setItem('trainer', numberText.value);
+      location.href = "/edit-json.html";
+    }
+
+    editRule.addEventListener('click', editRuleClick);
+    wholeStory.addEventListener('click', showWholeStoryClick);
+    readingAloud.addEventListener('click', readingAloudClick);
+    //withBotUI.addEventListener('click', withBotUIClick);
+    editJSON.addEventListener('click', editJSONClick);
+  </script>
+</html>
